@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+    <script type="text/javascript">
+
+
+    </script>
+
+{% endblock %}
+
+{% block content %}
+
+	{% for card in set.cards %}
+		<div>{{card.name}}</div>
+	{% empty %}
+		<form action="/set/{{set.id}}/import/" method="POST" enctype="multipart/form-data">
+			{% csrf_token %}
+			<input id="set_file" name="set_file" type='file' />
+			<button type="submit" id="import_list">Import List</button>
+		</form>
+	{% endfor %}
+
+{% endblock %}

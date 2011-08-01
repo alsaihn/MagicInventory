@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+    <script type="text/javascript">
+        $().ready(function() {
+            $("#add_new_set").click(function() {
+                var data = $("#new_set_name")[0].value;
+                if (data && data != "") {
+                    $.ajax({
+                    	url: '/set/add/',
+                    	type: 'POST',
+                    	data: {name: data},
+						success: function(msg){
+						 	window.location = "/";
+						}
+
+                    });
+                }
+            });
+        });
+
+
+    </script>
+
+{% endblock %}
+
+
+{% block content %}
+
+    {% for set in sets %}
+    	<div><a href="/set/{{set.id}}">{{set.name}}</a></div>
+    {% endfor %}
+
+
+
+	<div>Name <input id="new_set_name" /> <button id="add_new_set">Add New Set</button></div>
+
+{% endblock %}
