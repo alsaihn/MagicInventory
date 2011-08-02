@@ -91,9 +91,11 @@ def import_card_list(request, set_id):
         card.sets.add(set)
         
         link = Link()
-        link.url = "http://gatherer.wizards.com/Pages/Card" + c.find('td', 'leftCol').find('img')['src'].strip('.')
+        link.url = "http://gatherer.wizards.com/Pages" + c.find('td', 'leftCol').find('a')['href'].strip('.')
         link.link_text = "Gatherer"
-        
+        link.card = card
+        link.save()
+                
         print card.name
     
     return redirect('/set/' + set_id)
