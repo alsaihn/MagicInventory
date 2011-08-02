@@ -11,7 +11,9 @@ urlpatterns = patterns('',
     url(r'^set/(?P<id>\d+)/$', 'inventory.views.get_set'),
     url(r'^set/(?P<set_id>\d+)/import/$', 'inventory.views.import_card_list'),
     url(r'^set/add/$', 'inventory.views.add_set'),
-     
+    url(r'^set/(?P<set_id>\d+)/add/(?P<card_id>\d+)/$', 'inventory.views.add_card'),
+    url(r'^set/(?P<set_id>\d+)/subtract/(?P<card_id>\d+)/$', 'inventory.views.subtract_card'),
+    url(r'^card/(?P<card_id>\d+)/$', 'inventory.views.get_card'),
      
     # url(r'^MagicInventory/', include('MagicInventory.foo.urls')),
 

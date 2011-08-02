@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.utils.encoding import smart_unicode
 
@@ -29,6 +29,22 @@ def add_set(request):
     set = Set(name=set_name)
     set.save()
     return render_to_json({'success': 'true'})
+
+def get_card(request, card_id):
+    card = Card.objects.get(pk=card_id)
+    return render_to_response('card.html', RequestContext(request,{'card': card}))
+
+def add_card(request, set_id, card_id):
+    card = Card.objects.get(pk=card_id)
+    card.count = card.count + 1
+    card.save()
+    return redirect('/set/' + set_id)
+
+def subtract_card(request, set_id, card_id):
+    card = Card.objects.get(pk=card_id)
+    card.count = card.count - 1
+    card.save()
+    return redirect('/set/' + set_id)
 
 def import_card_list(request, set_id):
     file = request.FILES["set_file"]
@@ -72,12 +88,15 @@ def import_card_list(request, set_id):
         	print card.toughness
         
         card.save()
-        
         card.sets.add(set)
+        
+        link = Link()
+        link.url = "http://gatherer.wizards.com/Pages/Card" + c.find('td', 'leftCol').find('img')['src'].strip('.')
+        link.link_text = "Gatherer"
         
         print card.name
     
-    return render_to_json({'success': 'true'})
+    return redirect('/set/' + set_id)
     
 
     

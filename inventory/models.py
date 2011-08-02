@@ -9,7 +9,6 @@ class Set(models.Model):
     name = models.CharField(max_length=255)
     block = models.CharField(max_length=255, null=True)
     
-
 class Card(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(null=True)
@@ -19,8 +18,14 @@ class Card(models.Model):
     mana_cost = models.CharField(max_length=10, null=True)
     power = models.CharField(max_length=2, null=True)
     toughness = models.CharField(max_length=2, null=True)
+    
     count = models.IntegerField(default=0)
     foil_count = models.IntegerField(default=0)
     
     sets = models.ManyToManyField(Set, null=True)
     
+    
+class Link(models.Model):
+    url = models.CharField(max_length=500)
+    link_text = models.CharField(max_length=255)
+    card = models.ForeignKey(Card)

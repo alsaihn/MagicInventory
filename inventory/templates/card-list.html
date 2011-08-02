@@ -10,9 +10,18 @@
 {% endblock %}
 
 {% block content %}
+<h2>{{set.name}}</h2>
 
-	{% for card in set.cards %}
-		<div>{{card.name}}</div>
+<table style="width:910px;">
+	{% for card in set.card_set.all %}
+		{% if forloop.first or forloop.counter0|divisibleby:3 %} <tr> {% endif %}
+		<td style="width:300px;">
+		<a href="/card/{{card.id}}/">{{card.name}}</a> ( x{{card.count}} )
+		<a href="/set/{{set.id}}/add/{{card.id}}/"> Add </a>
+		{% if card.count > 0 %}
+		<a href="/set/{{set.id}}/subtract/{{card.id}}/"> Subtract </a>
+		{% endif %}
+		</td>
 	{% empty %}
 		<form action="/set/{{set.id}}/import/" method="POST" enctype="multipart/form-data">
 			{% csrf_token %}
@@ -20,5 +29,5 @@
 			<button type="submit" id="import_list">Import List</button>
 		</form>
 	{% endfor %}
-
+</table>
 {% endblock %}
