@@ -17,7 +17,7 @@ def render_to_json(j):
 
 
 def get_set_list(request):
-    sets = Set.objects.all()
+    sets = Set.objects.all().order_by('block')
     return render_to_response('set-list.html', RequestContext(request,{'sets': sets}))
 
 def get_set(request, id):
@@ -26,7 +26,8 @@ def get_set(request, id):
 
 def add_set(request):
     set_name = request.POST['name']
-    set = Set(name=set_name)
+    set_block = request.POST['block']
+    set = Set(name=set_name, block=set_block)
     set.save()
     return render_to_json({'success': 'true'})
 
@@ -34,17 +35,34 @@ def get_card(request, card_id):
     card = Card.objects.get(pk=card_id)
     return render_to_response('card.html', RequestContext(request,{'card': card}))
 
-def add_card(request, set_id, card_id):
+def add_card(request, set_id, card_id, count=1):
+    count = int(count)
     card = Card.objects.get(pk=card_id)
-    card.count = card.count + 1
+    card.count = card.count + count
     card.save()
     return redirect('/set/' + set_id)
 
-def subtract_card(request, set_id, card_id):
+def subtract_card(request, set_id, card_id, count=1):
+    count = int(count)
     card = Card.objects.get(pk=card_id)
-    card.count = card.count - 1
+    card.count = card.count - count
     card.save()
     return redirect('/set/' + set_id)
+
+def add_foil(request, set_id, card_id, count=1):
+    count = int(count)
+    card = Card.objects.get(pk=card_id)
+    card.foil_count = card.foil_count + count
+    card.save()
+    return redirect('/set/' + set_id)
+
+def subtract_foil(request, set_id, card_id, count=1):
+    count = int(count)
+    card = Card.objects.get(pk=card_id)
+    card.foil_count = card.foil_count - count
+    card.save()
+    return redirect('/set/' + set_id)
+
 
 def import_card_list(request, set_id):
     file = request.FILES["set_file"]
@@ -81,10 +99,13 @@ def import_card_list(request, set_id):
         
         pt = type_line.string.split('(')
         if len(pt) > 1:
-        	card.power = int(type_line.string.split('(')[1].split('/')[0])
+            if "Planeswalker" in card.type:
+        	card.loyalty = type_line.string.split('(')[1].strip(')')
+            else:
+        	card.power = type_line.string.split('(')[1].split('/')[0].strip(')')
         	print card.power
         	
-        	card.toughness = int(type_line.string.split('(')[1].split('/')[1].strip(')'))
+        	card.toughness = type_line.string.split('(')[1].split('/')[1].strip(')')
         	print card.toughness
         
         card.save()

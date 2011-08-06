@@ -11,17 +11,40 @@
 
 {% block content %}
 <h2>{{set.name}}</h2>
+<h3>{{set.card_set.count}} Cards</h3>
 
-<table style="width:910px;">
+<table>
+	<tr><td>Name</td><td>Count</td><td> </td><td>Foil Count</td><td> </td></tr>
 	{% for card in set.card_set.all %}
-		{% if forloop.first or forloop.counter0|divisibleby:3 %} <tr> {% endif %}
-		<td style="width:300px;">
-		<a href="/card/{{card.id}}/">{{card.name}}</a> ( x{{card.count}} )
-		<a href="/set/{{set.id}}/add/{{card.id}}/"> Add </a>
+		<tr>
+		<td><a href="/card/{{card.id}}/">{{card.name}}</a> </td>
+		<td>{{card.count}} </td>
+		<td><a href="/set/{{set.id}}/add/{{card.id}}/"> +1 </a>
+		    <a href="/set/{{set.id}}/add/{{card.id}}/2/"> +2 </a>
+		    <a href="/set/{{set.id}}/add/{{card.id}}/3/"> +3 </a>
+		    <a href="/set/{{set.id}}/add/{{card.id}}/4/"> +4 </a>
 		{% if card.count > 0 %}
-		<a href="/set/{{set.id}}/subtract/{{card.id}}/"> Subtract </a>
+		    /
+		    <a href="/set/{{set.id}}/subtract/{{card.id}}/"> -1 </a>
+		    <a href="/set/{{set.id}}/subtract/{{card.id}}/2/"> -2 </a>
+		    <a href="/set/{{set.id}}/subtract/{{card.id}}/3/"> -3 </a>
+		    <a href="/set/{{set.id}}/subtract/{{card.id}}/4/"> -4 </a>
 		{% endif %}
 		</td>
+		<td>{{card.foil_count}}</td>
+		<td><a href="/set/{{set.id}}/addfoil/{{card.id}}/"> +1 </a>
+		    <a href="/set/{{set.id}}/addfoil/{{card.id}}/2/"> +2 </a>
+		    <a href="/set/{{set.id}}/addfoil/{{card.id}}/3/"> +3 </a>
+		    <a href="/set/{{set.id}}/addfoil/{{card.id}}/4/"> +4 </a>
+		{% if card.foil_count > 0 %}
+		    /
+		    <a href="/set/{{set.id}}/subtractfoil/{{card.id}}/"> -1 </a>
+		    <a href="/set/{{set.id}}/subtractfoil/{{card.id}}/2/"> -2 </a>
+		    <a href="/set/{{set.id}}/subtractfoil/{{card.id}}/3/"> -3 </a>
+		    <a href="/set/{{set.id}}/subtractfoil/{{card.id}}/4/"> -4 </a>
+		{% endif %}
+		</td>
+		</tr>
 	{% endfor %}
 </table>
 <form action="/set/{{set.id}}/import/" method="POST" enctype="multipart/form-data">
