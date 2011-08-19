@@ -12,7 +12,26 @@
 {% block content %}
 <h2>{{card.name}}</h2>
 
+<div>Count: {{card.count}}</div>
+<div>Foils: {{card.foil_count}} </div>
+
+<div>Description: {{card.description}}</div>
+<div>Type: {{card.type}}</div>
+<div>Rarity: {{card.rarity}}</div>
+<div>Mana cost: {{card.mana_cost}}</div>
+<div>Power: {{card.power}}</div>
+<div>Toughness: {{card.toughness}}</div>
+<div>Loyalty: {{card.loyalty}}</div>
 <div>{{card.link_set.all.0.url}}</div>
 
+{% for alt in card.alternateartcard_set.all %}
+<div>Alternate Art Card</div>
+<div>Count: {{alt.count}}</div>
+<div>Foils: {{alt.foil_count}}</div>
+<form method="POST" action="/alt/{{alt.id}}/update_notes/">
+	{% csrf_token %}
+	<div>Notes: <input id='notes' name='notes' value='{{alt.notes}}'></input><button type='submit'>Update<button/></div>
+</form>
+{% endfor %}
 
 {% endblock %}

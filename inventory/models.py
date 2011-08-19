@@ -31,6 +31,13 @@ class Card(models.Model):
     def __str__(self):
         return self.name
     
+class AlternateArtCard(models.Model):
+    card = models.ForeignKey(Card)
+    notes = models.CharField(max_length=255)
+    
+    count = models.IntegerField(default=0)
+    foil_count = models.IntegerField(default=0)
+    
 class Link(models.Model):
     url = models.CharField(max_length=500)
     link_text = models.CharField(max_length=255)
