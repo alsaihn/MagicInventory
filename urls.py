@@ -9,8 +9,10 @@ urlpatterns = patterns('',
     url(r'^$', 'inventory.views.get_set_list'),
     
     url(r'^set/(?P<id>\d+)/$', 'inventory.views.get_set'),
+    url(r'^set/(?P<id>\d+)/buylist/$', 'inventory.views.get_set_buylist'),
     url(r'^set/(?P<set_id>\d+)/import/$', 'inventory.views.import_card_list'),
     url(r'^set/add/$', 'inventory.views.add_set'),
+    
     
     url(r'^card/(?P<card_id>\d+)/add/$', 'inventory.views.add_card'),
     url(r'^card/(?P<card_id>\d+)/add/(?P<count>\d+)/$', 'inventory.views.add_card'),

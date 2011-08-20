@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+    <script type="text/javascript">
+
+
+    </script>
+
+{% endblock %}
+
+{% block content %}
+<h2>{{set.name}}</h2>
+
+<table>
+	<tr><td>Name</td><td>Have</td><td>Need</td></tr>
+	{% for card in cards %}
+		<tr>
+		<td><a class="{{card.rarity}}" href="/card/{{card.id}}/" target="_blank">{{card.name}}</a> </td>
+		<td>{{card.count}} </td>
+		<td>{{card.missing}} </td>
+		</tr>
+	{% endfor %}
+</table>
+
+{% endblock %}

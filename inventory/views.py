@@ -24,6 +24,12 @@ def get_set(request, id):
     set = Set.objects.get(pk=id)
     return render_to_response('card-list.html', RequestContext(request,{'set': set}))
 
+def get_set_buylist(request, id):
+    set = Set.objects.get(pk=id)
+    cards = set.card_set.filter(count__lt=4)
+    
+    return render_to_response('buy-list.html', RequestContext(request,{'set': set, 'cards': cards}))
+
 def add_set(request):
     set_name = request.POST['name']
     set_block = request.POST['block']

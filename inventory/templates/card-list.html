@@ -13,11 +13,13 @@
 <h2>{{set.name}}</h2>
 <h3>{{set.card_set.count}} Cards</h3>
 
+<div><a href="/set/{{set.id}}/buylist/" target="_blank">View Buylist</a></div>
+
 <table>
 	<tr><td>Name</td><td>Count</td><td> </td><td>Foil Count</td><td> </td><td> </td></tr>
 	{% for card in set.card_set.all %}
 		<tr>
-		<td><a href="/card/{{card.id}}/" target="_blank">{{card.name}}</a> </td>
+		<td><a class="{{card.rarity}}" href="/card/{{card.id}}/" target="_blank">{{card.name}}</a> </td>
 		<td>{{card.count}} </td>
 		<td><a href="/card/{{card.id}}/add/"> +1 </a>
 		    <a href="/card/{{card.id}}/add/2/"> +2 </a>

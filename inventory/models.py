@@ -30,7 +30,10 @@ class Card(models.Model):
     
     def __str__(self):
         return self.name
-    
+        
+    def missing(self):
+        return 4-self.count
+        
 class AlternateArtCard(models.Model):
     card = models.ForeignKey(Card)
     notes = models.CharField(max_length=255)

@@ -1,0 +1,15 @@
+.Land, .Common {
+    color:black;
+}
+
+.Uncommon {
+    color:#708090;
+}
+
+.Rare {
+    color:#FFA500;
+}
+
+.Legendary, .Mythic {
+    color:#FF4500;
+}
