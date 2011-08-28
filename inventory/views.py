@@ -51,8 +51,6 @@ def change_card_count(request):
 	else: 
 		card = Card.objects.get(pk=id)
 		
-	print card
-		
 	if 'foil' in type:
 		card.foil_count = card.foil_count + int(count)
 	else:
@@ -91,7 +89,6 @@ def import_card_list(request, set_id):
     
     for index, c in enumerate(cards):
         card = Card()
-        #print c.prettify()
         card.name = c.find('span', 'cardTitle').a.string
         card.description = c.find('div', 'rulesText').p.string
         
@@ -111,7 +108,6 @@ def import_card_list(request, set_id):
         
         version = c.find('td', 'setVersions').find('img')
         card.rarity = version['title'].split('(')[1].strip(')')
-        print card.rarity.encode('ascii', 'replace')
         
         pt = type_line.string.split('(')
         if len(pt) > 1:
@@ -119,10 +115,8 @@ def import_card_list(request, set_id):
         	card.loyalty = type_line.string.split('(')[1].strip(')')
             else:
         	card.power = type_line.string.split('(')[1].split('/')[0].strip(')')
-        	print card.power
         	
         	card.toughness = type_line.string.split('(')[1].split('/')[1].strip(')')
-        	print card.toughness
         
         card.save()
         card.sets.add(set)
@@ -133,8 +127,6 @@ def import_card_list(request, set_id):
         link.card = card
         link.save()
                 
-        print card.name
-    
     return redirect('/set/' + set_id)
     
 
