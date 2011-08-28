@@ -2,8 +2,8 @@ from django.db import models
 
 # Create your models here.
 
-RARITY_CHOICES=( ('Common', 'Common'), ('Uncommon','Uncommon'), ('Rare','Rare'), ('Legendary', 'Legendary') )
-
+RARITY_CHOICES=( ('Common', 'Common'), ('Uncommon','Uncommon'), ('Rare','Rare'), ('Mythic Rare', 'Mythic Rare') )
+MANA_TYPE_CHOICES=(("Colorless", "Colorless"), ("White","White"), ("Blue", "Blue"), ("Black", "Black"), ("Red", "Red"), ("Green", "Green"), ("Artifact", "Artifact"), ("Land","Land"))
 
 class Set(models.Model):
     name = models.CharField(max_length=255)
@@ -34,12 +34,18 @@ class Card(models.Model):
     def missing(self):
         return 4-self.count
         
+    def get_color(self):
+    	pass
+        
 class AlternateArtCard(models.Model):
     card = models.ForeignKey(Card)
     notes = models.CharField(max_length=255)
     
     count = models.IntegerField(default=0)
     foil_count = models.IntegerField(default=0)
+        
+    def missing(self):
+        return 4-self.count
     
 class Link(models.Model):
     url = models.CharField(max_length=500)

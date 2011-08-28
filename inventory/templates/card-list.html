@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block head %}
+	<script type="text/javascript" src="/static/mi.js" />
 
     <script type="text/javascript">
 
@@ -18,66 +19,58 @@
 <table>
 	<tr><td>Name</td><td>Count</td><td> </td><td>Foil Count</td><td> </td><td> </td></tr>
 	{% for card in set.card_set.all %}
-		<tr>
-		<td><a class="{{card.rarity}}" href="/card/{{card.id}}/" target="_blank">{{card.name}}</a> </td>
-		<td>{{card.count}} </td>
-		<td><a href="/card/{{card.id}}/add/"> +1 </a>
-		    <a href="/card/{{card.id}}/add/2/"> +2 </a>
-		    <a href="/card/{{card.id}}/add/3/"> +3 </a>
-		    <a href="/card/{{card.id}}/add/4/"> +4 </a>
-		{% if card.count > 0 %}
+		<tr id="{{card.id}}">
+		<td class="card_name"><a class="{{card.rarity}}" href="/card/{{card.id}}/" target="_blank">{{card.name}}</a> </td>
+		<td class="card_count">{{card.count}} </td>
+		<td><a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, '', 1)"> +1 </a>
+		    <a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, '', 2)"> +2 </a>
+		    <a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, '', 3)"> +3 </a>
+		    <a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, '', 4)"> +4 </a>
 		    /
-		    <a href="/card/{{card.id}}/subtract/"> -1 </a>
-		    <a href="/card/{{card.id}}/subtract/2/"> -2 </a>
-		    <a href="/card/{{card.id}}/subtract/3/"> -3 </a>
-		    <a href="/card/{{card.id}}/subtract/4/"> -4 </a>
-		{% endif %}
+		    <a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, '', -1)"> -1 </a>
+			<a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, '', -2)"> -2 </a>
+			<a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, '', -3)"> -3 </a>
+		    <a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, '', -4)"> -4 </a>
 		</td>
-		<td>{{card.foil_count}}</td>
-		<td><a href="/card/{{card.id}}/addfoil/"> +1 </a>
-		    <a href="/card/{{card.id}}/addfoil/2/"> +2 </a>
-		    <a href="/card/{{card.id}}/addfoil/3/"> +3 </a>
-		    <a href="/card/{{card.id}}/addfoil/4/"> +4 </a>
-		{% if card.foil_count > 0 %}
+		<td class="card_foil_count">{{card.foil_count}}</td>
+		<td><a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'foil', 1)"> +1 </a>
+		    <a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'foil', 2)"> +2 </a>
+		    <a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'foil', 3)"> +3 </a>
+		    <a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'foil', 4)"> +4 </a>
 		    /
-		    <a href="/card/{{card.id}}/subtractfoil/"> -1 </a>
-		    <a href="/card/{{card.id}}/subtractfoil/2/"> -2 </a>
-		    <a href="/card/{{card.id}}/subtractfoil/3/"> -3 </a>
-		    <a href="/card/{{card.id}}/subtractfoil/4/"> -4 </a>
-		{% endif %}
+		    <a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'foil', -1)"> -1 </a>
+			<a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'foil', -2)"> -2 </a>
+			<a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'foil', -3)"> -3 </a>
+		    <a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'foil', -4)"> -4 </a>
 		</td>
 		<td><a href="/card/{{card.id}}/create_alt/">Add Alt</a></td>
 		</tr>
 
 		{% if card.alternateartcard_set.count > 0 %}
 			{% for card in card.alternateartcard_set.all %}
-				<tr>
-					<td>Alternate Art: {{card.notes}}</td>
-					<td>{{card.count}}</td>
-					<td><a href="/card/{{card.id}}/addalt/"> +1 </a>
-						<a href="/card/{{card.id}}/addalt/2/"> +2 </a>
-						<a href="/card/{{card.id}}/addalt/3/"> +3 </a>
-						<a href="/card/{{card.id}}/addalt/4/"> +4 </a>
-					{% if card.count > 0 %}
+				<tr id="alt_{{card.id}}">
+					<td class="card_name">Alternate Art: {{card.notes}}</td>
+					<td class="card_count">{{card.count}}</td>
+					<td><a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'alt', 1)"> +1 </a>
+						<a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'alt', 2)"> +2 </a>
+						<a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'alt', 3)"> +3 </a>
+						<a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'alt', 4)"> +4 </a>
 						/
-						<a href="/card/{{card.id}}/subtractalt/"> -1 </a>
-						<a href="/card/{{card.id}}/subtractalt/2/"> -2 </a>
-						<a href="/card/{{card.id}}/subtractalt/3/"> -3 </a>
-						<a href="/card/{{card.id}}/subtractalt/4/"> -4 </a>
-					{% endif %}
+						<a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'alt', -1)"> -1 </a>
+						<a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'alt', -2)"> -2 </a>
+						<a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'alt', -3)"> -3 </a>
+						<a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'alt', -4)"> -4 </a>
 					</td>
-					<td>{{card.foil_count}}</td>
-					<td><a href="/card/{{card.id}}/addaltfoil/"> +1 </a>
-						<a href="/card/{{card.id}}/aaddaltfoil/2/"> +2 </a>
-						<a href="/card/{{card.id}}/addaltfoil/3/"> +3 </a>
-						<a href="/card/{{card.id}}/addaltfoil/4/"> +4 </a>
-					{% if card.foil_count > 0 %}
+					<td class="card_foil_count">{{card.foil_count}}</td>
+					<td><a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'altfoil', 1)"> +1 </a>
+						<a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'altfoil', 2)"> +2 </a>
+						<a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'altfoil', 3)"> +3 </a>
+						<a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'altfoil', 4)"> +4 </a>
 						/
-						<a href="/card/{{card.id}}/subtractaltfoil/"> -1 </a>
-						<a href="/card/{{card.id}}/subtractaltfoil/2/"> -2 </a>
-						<a href="/card/{{card.id}}/subtractaltfoil/3/"> -3 </a>
-						<a href="/card/{{card.id}}/subtractaltfoil/4/"> -4 </a>
-					{% endif %}
+						<a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'altfoil', -1)"> -1 </a>
+						<a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'altfoil', -2)"> -2 </a>
+						<a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'altfoil', -3)"> -3 </a>
+						<a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'altfoil', -4)"> -4 </a>
 					</td>
 					<td><a href="/alt/{{card.id}}/delete/">Delete Alt</a></td>
 				</tr>

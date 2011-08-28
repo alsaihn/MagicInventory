@@ -13,28 +13,7 @@ urlpatterns = patterns('',
     url(r'^set/(?P<set_id>\d+)/import/$', 'inventory.views.import_card_list'),
     url(r'^set/add/$', 'inventory.views.add_set'),
     
-    
-    url(r'^card/(?P<card_id>\d+)/add/$', 'inventory.views.add_card'),
-    url(r'^card/(?P<card_id>\d+)/add/(?P<count>\d+)/$', 'inventory.views.add_card'),
-    url(r'^card/(?P<card_id>\d+)/subtract/$', 'inventory.views.subtract_card'),
-    url(r'^card/(?P<card_id>\d+)/subtract/(?P<count>\d+)/$', 'inventory.views.subtract_card'),
-    
-    url(r'^card/(?P<card_id>\d+)/addfoil/$', 'inventory.views.add_foil'),
-    url(r'^card/(?P<card_id>\d+)/addfoil/(?P<count>\d+)/$', 'inventory.views.add_foil'),
-    url(r'^card/(?P<card_id>\d+)/subtractfoil/$', 'inventory.views.subtract_foil'),
-    url(r'^card/(?P<card_id>\d+)/subtractfoil/(?P<count>\d+)/$', 'inventory.views.subtract_foil'),
-           
-    url(r'^card/(?P<card_id>\d+)/addalt/$', 'inventory.views.add_card_alt'),
-    url(r'^card/(?P<card_id>\d+)/addalt/(?P<count>\d+)/$', 'inventory.views.add_card_alt'),
-    url(r'^card/(?P<card_id>\d+)/subtractalt/$', 'inventory.views.subtract_card_alt'),
-    url(r'^card/(?P<card_id>\d+)/subtractalt/(?P<count>\d+)/$', 'inventory.views.subtract_card_alt'),
-    
-    url(r'^card/(?P<card_id>\d+)/addaltfoil/$', 'inventory.views.add_foil_alt'),
-    url(r'^card/(?P<card_id>\d+)/addaltfoil/(?P<count>\d+)/$', 'inventory.views.add_foil_alt'),
-    url(r'^card/(?P<card_id>\d+)/subtractaltfoil/$', 'inventory.views.subtract_foil_alt'),
-    url(r'^card/(?P<card_id>\d+)/subtractaltfoil/(?P<count>\d+)/$', 'inventory.views.subtract_foil_alt'),
-   
-    
+    url(r'^card/change_count/$', 'inventory.views.change_card_count'),           
     url(r'^card/(?P<card_id>\d+)/$', 'inventory.views.get_card'),
     url(r'^card/(?P<card_id>\d+)/create_alt/$', 'inventory.views.create_card_alt'),
     

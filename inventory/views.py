@@ -25,10 +25,8 @@ def get_set(request, id):
     return render_to_response('card-list.html', RequestContext(request,{'set': set}))
 
 def get_set_buylist(request, id):
-    set = Set.objects.get(pk=id)
-    cards = set.card_set.filter(count__lt=4)
-    
-    return render_to_response('buy-list.html', RequestContext(request,{'set': set, 'cards': cards}))
+    set = Set.objects.get(pk=id)    
+    return render_to_response('buy-list.html', RequestContext(request,{'set': set, 'cards': set.card_set.all()}))
 
 def add_set(request):
     set_name = request.POST['name']
@@ -41,61 +39,29 @@ def get_card(request, card_id):
     card = Card.objects.get(pk=card_id)
     return render_to_response('card.html', RequestContext(request,{'card': card}))
 
-def add_card(request, card_id, count=1):
-    count = int(count)
-    card = Card.objects.get(pk=card_id)
-    card.count = card.count + count
-    card.save()
-    return redirect(request.META['HTTP_REFERER'])
-
-def subtract_card(request, card_id, count=1):
-    count = int(count)
-    card = Card.objects.get(pk=card_id)
-    card.count = card.count - count
-    card.save()
-    return redirect(request.META['HTTP_REFERER'])
-
-def add_foil(request, card_id, count=1):
-    count = int(count)
-    card = Card.objects.get(pk=card_id)
-    card.foil_count = card.foil_count + count
-    card.save()
-    return redirect(request.META['HTTP_REFERER'])
-
-def subtract_foil(request, card_id, count=1):
-    count = int(count)
-    card = Card.objects.get(pk=card_id)
-    card.foil_count = card.foil_count - count
-    card.save()
-    return redirect(request.META['HTTP_REFERER'])
-    
-def add_card_alt(request, card_id, count=1):
-    count = int(count)
-    card = AlternateArtCard.objects.get(pk=card_id)
-    card.count = card.count + count
-    card.save()
-    return redirect(request.META['HTTP_REFERER'])
-
-def subtract_card_alt(request, card_id, count=1):
-    count = int(count)
-    card = AlternateArtCard.objects.get(pk=card_id)
-    card.count = card.count - count
-    card.save()
-    return redirect(request.META['HTTP_REFERER'])
-
-def add_foil_alt(request, card_id, count=1):
-    count = int(count)
-    card = AlternateArtCard.objects.get(pk=card_id)
-    card.foil_count = card.foil_count + count
-    card.save()
-    return redirect(request.META['HTTP_REFERER'])
-
-def subtract_foil_alt(request, card_id, count=1):
-    count = int(count)
-    card = AlternateArtCard.objects.get(pk=card_id)
-    card.foil_count = card.foil_count - count
-    card.save()
-    return redirect(request.META['HTTP_REFERER'])
+def change_card_count(request):
+	id = request.GET['id']
+	type = request.GET['type']
+	count = request.GET['count']
+	
+	print (id, type, count)
+	
+	if 'alt' in type: 
+		card = AlternateArtCard.objects.get(pk=id)
+	else: 
+		card = Card.objects.get(pk=id)
+		
+	print card
+		
+	if 'foil' in type:
+		card.foil_count = card.foil_count + int(count)
+	else:
+	    card.count = card.count + int(count)
+	    
+	card.save()
+	    
+	return render_to_json({'id': card.id, 'type': type, 'count': card.count, 'foil_count': card.foil_count})
+	
 
 def create_card_alt(request, card_id):    
     card = Card.objects.get(pk=card_id)

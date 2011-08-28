@@ -15,11 +15,26 @@
 <table>
 	<tr><td>Name</td><td>Have</td><td>Need</td></tr>
 	{% for card in cards %}
+		{%if card.missing > 0%}
 		<tr>
 		<td><a class="{{card.rarity}}" href="/card/{{card.id}}/" target="_blank">{{card.name}}</a> </td>
 		<td>{{card.count}} </td>
 		<td>{{card.missing}} </td>
 		</tr>
+		{% endif %}
+		{% if card.alternateartcard_set.count > 0 %}
+			{% for card in card.alternateartcard_set.all %}
+				{% if card.missing > 0 %}
+				<tr>
+					<td>{{card.card.name}} - Alternate Art: {{card.notes}}</td>
+					<td>{{card.count}} </td>
+					<td>{{card.missing}} </td>
+				</tr>
+				{% endif %}
+			{% endfor %}
+		{% endif %}
+
+
 	{% endfor %}
 </table>
 
