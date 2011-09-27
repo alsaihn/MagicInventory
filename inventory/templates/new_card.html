@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+    <script type="text/javascript">
+
+
+    </script>
+
+{% endblock %}
+
+{% block content %}
+
+<form method="POST" action="/card/new/">
+	{% csrf_token %}
+	{{ form.as_p }}
+	<button type='submit'>Submit<button/>
+</form>
+
+{% endblock %}

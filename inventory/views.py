@@ -17,12 +17,17 @@ def render_to_json(j):
 
 
 def get_set_list(request):
-    sets = Set.objects.all().order_by('block')
+    sets = Set.objects.all().order_by('block', 'name')
     return render_to_response('set-list.html', RequestContext(request,{'sets': sets}))
 
 def get_set(request, id):
     set = Set.objects.get(pk=id)
-    return render_to_response('card-list.html', RequestContext(request,{'set': set}))
+    return render_to_response('card-list.html', RequestContext(request,{'set': set, 'cards': set.card_set.all}))
+
+def get_add_mode(request, id):
+    set = Set.objects.get(pk=id)
+    cards = set.card_set.exclude(count__gte=4)
+    return render_to_response('card-list.html', RequestContext(request,{'set': set, 'cards': cards}))
 
 def get_set_buylist(request, id):
     set = Set.objects.get(pk=id)    
@@ -38,6 +43,15 @@ def add_set(request):
 def get_card(request, card_id):
     card = Card.objects.get(pk=card_id)
     return render_to_response('card.html', RequestContext(request,{'card': card}))
+
+def search_cards(request):
+	if request.GET.__contains__('s'):
+		cards = Card.objects.filter(name__icontains=request.GET['s'])
+		return render_to_response('results.html', RequestContext(request,{'cards': cards}))
+	
+	cards = Card.objects.none()
+	return render_to_response('results.html', RequestContext(request, {'cards': cards}))
+		
 
 def change_card_count(request):
 	id = request.GET['id']
@@ -59,7 +73,22 @@ def change_card_count(request):
 	card.save()
 	    
 	return render_to_json({'id': card.id, 'type': type, 'count': card.count, 'foil_count': card.foil_count})
-	
+
+def create_card(request):
+	if request.method == 'POST':
+		form = CardForm(request.POST)
+		if form.is_valid():
+			form.save()
+			
+			new_form = CardForm()
+			return render_to_response('new_card.html', RequestContext(request,{'form': new_form}))
+		
+	else:
+		form = CardForm()
+		
+	return render_to_response('new_card.html', RequestContext(request,{'form': form}))
+
+		
 
 def create_card_alt(request, card_id):    
     card = Card.objects.get(pk=card_id)

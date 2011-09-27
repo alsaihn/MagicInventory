@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+    <script type="text/javascript">
+        $().ready(function() {
+            $("#card_search").click(function() {
+                var name = $("#card_name")[0].value;
+                if (name && name != "") {
+                    location="/search/?s=" + name;
+                }
+            });
+        });
+
+
+    </script>
+
+{% endblock %}
+
+
+{% block content %}
+
+	<div style="padding-top:20px;">
+		Card Name <input id="card_name" /> <br/>
+	    <button id="card_search">Search</button>
+	</div>
+
+{% if cards %}
+	<div>{{cards.count}} Results</div>
+	<table>
+	<tr><th>Name</th><th>Set</th><th>Count</th><th>Foils</th></tr>
+	{% for card in cards %}
+		<tr>
+			<td>{{card.name}}</td>
+			<td>{{card.sets.all.0}}</td>
+			<td>{{card.count}}</td>
+			<td>{{card.foil_count}} </td>
+		</tr>
+	{% endfor %}
+
+	</table>
+
+{% endif %}
+
+{% endblock %}
