@@ -46,7 +46,7 @@ def get_card(request, card_id):
 
 def search_cards(request):
 	if request.GET.__contains__('s'):
-		cards = Card.objects.filter(name__icontains=request.GET['s'])
+		cards = Card.objects.filter(name__icontains=request.GET['s']).order_by("name")
 		return render_to_response('results.html', RequestContext(request,{'cards': cards}))
 	
 	cards = Card.objects.none()
@@ -57,8 +57,6 @@ def change_card_count(request):
 	id = request.GET['id']
 	type = request.GET['type']
 	count = request.GET['count']
-	
-	print (id, type, count)
 	
 	if 'alt' in type: 
 		card = AlternateArtCard.objects.get(pk=id)
@@ -107,6 +105,14 @@ def update_alt_notes(request, alt_id):
     alt.save()
     return redirect('/card/' + str(alt.card.id))
 
+#fix mana by hand: 
+# apocalypse, dissension, invasion, timeshifted: duel cards
+# arabian nights: kaiso
+# champions of kamigawa, tempest: (name) cards
+# judgment, timeshifted: valor
+# legends: Aerathi berserker
+# oddessy, timeshifted: call of the herd
+
 def import_card_list(request, set_id):
     file = request.FILES["set_file"]
     set = Set.objects.get(pk=set_id)
@@ -127,12 +133,16 @@ def import_card_list(request, set_id):
         print card.type.encode('ascii', 'replace')
         card.collector_number = index
         
-        mana_images = c.find('span', 'manaCost').findAll('img')
-        mana_string = ""
-        for m in mana_images:
-            mana_string = mana_string + m['alt'] + " "
-        	
-        card.mana_cost = mana_string
+        mana_images = c.find('span', 'manaCost').findAll('img')	
+        mana = []
+        for mp in mana_images:
+			m = mp['alt']
+			if len(m) > 1:
+				m = m[0]
+			mana.append(m)			
+        mana = ' '.join(mana)
+        
+        card.mana_cost = mana
         print card.mana_cost.encode('ascii', 'replace')
         
         version = c.find('td', 'setVersions').find('img')
@@ -158,6 +168,3 @@ def import_card_list(request, set_id):
                 
     return redirect('/set/' + set_id)
     
-
-    
-

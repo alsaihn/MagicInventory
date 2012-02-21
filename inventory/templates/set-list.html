@@ -4,6 +4,13 @@
 
     <script type="text/javascript">
         $().ready(function() {
+            $("#search_name").click(function() {
+            	var name = $("#card_name")[0].value;
+            	if (name && name != "") {
+                    location="/search/?s=" + name;
+            	}
+            });
+
             $("#add_new_set").click(function() {
                 var name = $("#new_set_name")[0].value;
                 var block = $("#new_set_block")[0].value;
@@ -19,6 +26,7 @@
                     });
                 }
             });
+
         });
 
 
@@ -29,8 +37,12 @@
 
 {% block content %}
 
+	<div>
+		Card Search: <input id="card_name" /> <button id="search_name">Search</button>
+	</div>
+
     {% for set in sets %}
-    	<div><a href="/set/{{set.id}}">{% if set.block %}{{set.block}} - {% endif %}{{set.name}}</a></div>
+    	<div>{% if set.icon %}<div style="display:inline-block;width:45px;"><img src='{{set.icon.url}}'/></div>{% endif %}<a href="/set/{{set.id}}">{% if set.block %}{{set.block}} - {% endif %}{{set.name}}</a></div>
     {% endfor %}
 
 

@@ -1,3 +1,5 @@
+import os
+import settings
 from django.db import models
 
 # Create your models here.
@@ -6,12 +8,18 @@ RARITY_CHOICES=( ('Common', 'Common'), ('Uncommon','Uncommon'), ('Rare','Rare'),
 MANA_TYPE_CHOICES=(("Colorless", "Colorless"), ("White","White"), ("Blue", "Blue"), ("Black", "Black"), ("Red", "Red"), ("Green", "Green"), ("Artifact", "Artifact"), ("Land","Land"))
 
 class Set(models.Model):
+
+    def get_image_path(instance, filename):
+		path = 'set_icons/' + filename
+		return path
+
     name = models.CharField(max_length=255)
-    block = models.CharField(max_length=255, null=True)
-    #add icon field
+    block = models.CharField(max_length=255, null=True, blank=True)
+    icon = models.ImageField(upload_to=get_image_path, null=True, blank=True)
     
     def __str__(self):
         return self.name
+        
     
 class Card(models.Model):
     name = models.CharField(max_length=255)

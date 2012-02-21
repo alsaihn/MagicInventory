@@ -2,6 +2,7 @@ from django.conf.urls.defaults import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+from django.conf import settings
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -23,6 +24,9 @@ urlpatterns = patterns('',
     
     url(r'^alt/(?P<alt_id>\d+)/update_notes/$', 'inventory.views.update_alt_notes'),
     url(r'^alt/(?P<alt_id>\d+)/delete/$', 'inventory.views.delete_card_alt'),
+     
+    (r'^set_icons/(?P<path>.*)$', 'django.views.static.serve',
+        {'document_root': settings.MEDIA_ROOT + "set_icons/"}), 
      
     # url(r'^MagicInventory/', include('MagicInventory.foo.urls')),
 
