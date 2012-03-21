@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load sorting_tags %}
+
 {% block head %}
 
     <script type="text/javascript">
@@ -36,21 +38,39 @@
 
 
 {% block content %}
+{% autosort sets %}
+<div class="content">
+	<div style="float:right;">
+		<div class="form">
+			<div class="form-row"><div>Card Search</div><input id="card_name" style="width:250px;" /></div>
+			<div class="form-row"><button id="search_name">Search</button></div>
+		</div>
 
-	<div>
-		Card Search: <input id="card_name" /> <button id="search_name">Search</button>
+		<div class="form" style="margin-top: 40px;">
+			<div class="form-row"><div>Name </div><input id="new_set_name" style="width:250px;" /> </div>
+			<div class="form-row"><div>Block </div><input id="new_set_block" style="width:250px;" /></div>
+			<div class="form-row"><button id="add_new_set">Add New Set</button></div>
+		</div>
 	</div>
 
-    {% for set in sets %}
-    	<div>{% if set.icon %}<div style="display:inline-block;width:45px;"><img src='{{set.icon.url}}'/></div>{% endif %}<a href="/set/{{set.id}}">{% if set.block %}{{set.block}} - {% endif %}{{set.name}}</a></div>
-    {% endfor %}
+	<div class="set-list">
+		<div class="sort">
+			Sort by: &nbsp;&nbsp; {% anchor block Block %}
+					 &nbsp;&nbsp; {% anchor name Set  %}
+		</div>
 
+		{% for set in sets %}
+			<div class="set">
+				<div class="set-icon">
+				{% if set.icon %}
+					<center><img src='{{set.icon.url}}'/></center>
+				{% endif %}
+				</div>
 
-
-	<div style="padding-top:20px;">
-		Name <input id="new_set_name" /> <br/>
-	    Block <input id="new_set_block" /><br/>
-	    <button id="add_new_set">Add New Set</button>
+				<a href="/set/{{set.id}}">
+					{% if set.block %}{{set.block}} - {% endif %}{{set.name}}</a>
+			</div>
+		{% endfor %}
 	</div>
-
+</div>
 {% endblock %}
