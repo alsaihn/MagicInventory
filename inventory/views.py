@@ -44,6 +44,28 @@ def get_card(request, card_id):
     card = Card.objects.get(pk=card_id)
     return render_to_response('card.html', RequestContext(request,{'card': card}))
 
+def edit_card(request, card_id):
+	card = Card.objects.get(pk=card_id)
+	if request.method == 'POST':
+		form = CardForm(request.POST, instance=card)
+		if form.is_valid():
+			form.save()
+    
+		return render_to_response('edit_card.html', RequestContext(request,{'form': form, 'id':card_id}))
+
+	else:
+		form = CardForm(instance=card)
+
+	return render_to_response('edit_card.html', RequestContext(request,{'form': form, 'id':card_id}))
+
+def delete_card(request, card_id):
+	card = Card.objects.get(pk=card_id)
+	set_id = card.sets.all()[0].id
+	card.delete()
+	set = Set.objects.get(pk=set_id)
+	
+	return redirect('/set/' + str(set.id) + '/')
+
 def search_cards(request):
 	if request.GET.__contains__('s'):
 		cards = Card.objects.filter(name__icontains=request.GET['s']).order_by("name")
@@ -51,8 +73,7 @@ def search_cards(request):
 	
 	cards = Card.objects.none()
 	return render_to_response('results.html', RequestContext(request, {'cards': cards}))
-		
-
+	
 def change_card_count(request):
 	id = request.GET['id']
 	type = request.GET['type']
@@ -77,7 +98,7 @@ def create_card(request):
 		form = CardForm(request.POST)
 		if form.is_valid():
 			form.save()
-			
+					
 			new_form = CardForm()
 			return render_to_response('new_card.html', RequestContext(request,{'form': new_form}))
 		
@@ -121,8 +142,14 @@ def import_card_list(request, set_id):
     
     cardstart = soup.find('table', "cardItemTable")
     cards = cardstart.findAllNext('table')
+
+    db_cards = Card.objects.filter(sets=set).order_by(-collector_number)
+    if db_cards.count() == 0:
+        card_index = 1
+    else:
+	    card_index = db_cards[0].collector_number
     
-    for index, c in enumerate(cards):
+    for c in enumerate(cards):
         card = Card()
         card.name = c.find('span', 'cardTitle').a.string
         card.description = c.find('div', 'rulesText').p.string
@@ -131,7 +158,7 @@ def import_card_list(request, set_id):
         card.type = type_line.string.split('(')[0].strip(' \t\n\r')
 
         print card.type.encode('ascii', 'replace')
-        card.collector_number = index
+        card.collector_number = card_index
         
         mana_images = c.find('span', 'manaCost').findAll('img')	
         mana = []

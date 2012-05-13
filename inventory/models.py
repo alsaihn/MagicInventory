@@ -19,7 +19,7 @@ class Set(models.Model):
     
     def __str__(self):
         return self.name
-        
+                
     
 class Card(models.Model):
     name = models.CharField(max_length=255)
@@ -67,3 +67,7 @@ from django.forms import ModelForm
 class CardForm(ModelForm):
 	class Meta: 
 		model = Card
+		
+class SetForm(ModelForm):
+	class Meta: 
+		model = Set

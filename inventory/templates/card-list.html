@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load sorting_tags %}
+
 {% block head %}
 	<script type="text/javascript" src="/static/mi.js" />
 
@@ -11,24 +13,41 @@
 {% endblock %}
 
 {% block content %}
-<h2>{{set.name}}</h2>
+{% autosort cards %}
+<div class="set">
+
+<div class="set_tools">
+	<div><a href="/set/{{set.id}}/addmode">Add Mode</a>
+         <a href="/set/{{set.id}}/">Full Mode</a>
+         <a href="/set/{{set.id}}/buylist/" target="_blank">View Buylist</a>
+     </div>
+    <div><a href="/card/new/">Add Custom Card</a></div>
+
+	<form action="/set/{{set.id}}/import/" method="POST" enctype="multipart/form-data">
+		{% csrf_token %}
+		<input id="set_file" name="set_file" type='file' />
+		<button type="submit" id="import_list">Import List</button>
+	</form>
+
+</div>
+
+<h2>{{set.name}}
+	{% if set.icon %}
+		<img src='{{set.icon.url}}'/>
+	{% endif %}
+</h2>
 <h3>{{set.card_set.count}} Cards</h3>
 
-<div>
-	<a href="/set/{{set.id}}/addmode">Add Mode</a>
-    <a href="/set/{{set.id}}/">Full Mode</a>
-    <a href="/set/{{set.id}}/buylist/" target="_blank">View Buylist</a>
-</div>
-<div><a href="/card/new/">Add Custom Card</a></div>
 
 <br/>
 
-<table>
-	<tr><td>Name</td><td>Count</td><td> </td><td>Foil Count</td><td> </td><td> </td></tr>
+<table id="card_table">
+	<tr><th>{% anchor collector_number 'Id' %}</th><th>{% anchor name Name %}</th><th>{% anchor count Count %}</th><th> </th><th>{% anchor foil_count 'Foil Count' %}</th><th> </th><th> </th></tr>
 	{% for card in cards %}
 		<tr id="{{card.id}}">
-		<td class="card_name"><a class="{{card.rarity}}" href="/card/{{card.id}}/" target="_blank">{{card.name}}</a> </td>
-		<td class="card_count">{{card.count}} </td>
+		<td class="center">{{card.collector_number}}</td>
+		<td class="card_name"> <a class="{{card.rarity}}" href="/card/{{card.id}}/" target="_blank">{{card.name}}</a> </td>
+		<td class="card_count center">{{card.count}} </td>
 		<td><a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, '', 1)"> +1 </a>
 		    <a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, '', 2)"> +2 </a>
 		    <a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, '', 3)"> +3 </a>
@@ -39,7 +58,7 @@
 			<a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, '', -3)"> -3 </a>
 		    <a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, '', -4)"> -4 </a>
 		</td>
-		<td class="card_foil_count">{{card.foil_count}}</td>
+		<td class="card_foil_count center">{{card.foil_count}}</td>
 		<td><a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'foil', 1)"> +1 </a>
 		    <a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'foil', 2)"> +2 </a>
 		    <a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'foil', 3)"> +3 </a>
@@ -56,8 +75,9 @@
 		{% if card.alternateartcard_set.count > 0 %}
 			{% for card in card.alternateartcard_set.all %}
 				<tr id="alt_{{card.id}}">
+					<td></td>
 					<td class="card_name">Alternate Art: {{card.notes}}</td>
-					<td class="card_count">{{card.count}}</td>
+					<td class="card_count center">{{card.count}}</td>
 					<td><a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'alt', 1)"> +1 </a>
 						<a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'alt', 2)"> +2 </a>
 						<a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'alt', 3)"> +3 </a>
@@ -68,7 +88,7 @@
 						<a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'alt', -3)"> -3 </a>
 						<a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'alt', -4)"> -4 </a>
 					</td>
-					<td class="card_foil_count">{{card.foil_count}}</td>
+					<td class="card_foil_count center">{{card.foil_count}}</td>
 					<td><a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'altfoil', 1)"> +1 </a>
 						<a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'altfoil', 2)"> +2 </a>
 						<a href="javascript:void(0)" onclick="mi.changeCardCount({{card.id}}, 'altfoil', 3)"> +3 </a>
@@ -85,11 +105,6 @@
 		{% endif %}
 	{% endfor %}
 </table>
-<form action="/set/{{set.id}}/import/" method="POST" enctype="multipart/form-data">
-	{% csrf_token %}
-	<input id="set_file" name="set_file" type='file' />
-	<button type="submit" id="import_list">Import List</button>
-</form>
 
-
+</div>
 {% endblock %}

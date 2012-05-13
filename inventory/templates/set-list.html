@@ -29,6 +29,18 @@
                 }
             });
 
+            $('#card_name').keyup(function(evt) {
+            	if (evt.keyCode == 13) {
+            		$('#search_name').click();
+            	}
+            });
+
+            $('#new_set_block').keyup(function(evt) {
+				if (evt.keyCode == 13) {
+					$('#add_new_set').click();
+				}
+            });
+
         });
 
 
@@ -68,7 +80,9 @@
 				</div>
 
 				<a href="/set/{{set.id}}">
-					{% if set.block %}{{set.block}} - {% endif %}{{set.name}}</a>
+					{% if set.block %}{{set.block}} - {% endif %}{{set.name}}
+				</a>
+
 			</div>
 		{% endfor %}
 	</div>

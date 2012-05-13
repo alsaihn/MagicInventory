@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load sorting_tags %}
 
 {% block head %}
 
@@ -12,8 +13,10 @@
 {% block content %}
 <h2>{{set.name}}</h2>
 
+{% autosort cards %}
+
 <table>
-	<tr><td>Name</td><td>Have</td><td>Need</td></tr>
+	<tr><th>{% anchor name Name %}</th><th>{% anchor count Have %}</th><th>Need</th></tr>
 	{% for card in cards %}
 		{%if card.missing > 0%}
 		<tr>

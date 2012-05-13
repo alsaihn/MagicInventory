@@ -11,7 +11,9 @@
 
 {% block content %}
 
-<form method="POST" action="/card/new/">
+<h2>Editing: {{ form.name.value }}</h2>
+
+<form class="edit_card_form" method="POST" action="/card/{{id}}/edit/">
 	{% csrf_token %}
 	{{ form.as_p }}
 	<button type='submit'>Submit</button>

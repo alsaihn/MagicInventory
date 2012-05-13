@@ -1,3 +1,7 @@
+.center {
+	text-align:center;
+}
+
 /*==========================
 /  Set List
 */
@@ -39,8 +43,24 @@
 }
 
 /*==========================
-/  Cards
+/  Set
 */
+
+.set {
+	position:relative;
+	padding-left:20px;
+}
+
+.set_tools {
+	position:absolute;
+	top:0px;
+	right:200px; 
+	border:1px solid black;
+	padding:10px;
+	padding-bottom:0px;
+	font-weight: bold;
+}
+
 
 .Land, .Common {
     color:black;
@@ -58,3 +78,50 @@
     color:#FF4500;
 }
 
+#card_table td {
+	padding-right:5px;
+}
+
+/*==========================
+/  Cards
+*/
+.card {
+	position:relative;
+	padding-left: 20px;
+}
+
+.alternate {
+	font-size: 1.2em;
+}
+
+.card_tools {
+	position:absolute;
+	left:300px;
+	top:0px;
+	padding: 10px;
+	border: 1px solid black;
+	font-weight:bold;
+}
+
+.card_attribute {
+	font-weight:bold;
+}
+
+/*==========================
+/  Forms
+*/
+form p label {
+	display:inline-block;
+	width:120px;
+	vertical-align:top;
+	font-weight: bold;
+}
+
+form p input, form p select {
+	width: 200px;
+}
+
+form p textarea {
+	width: 200px;
+	height: 60px;
+}

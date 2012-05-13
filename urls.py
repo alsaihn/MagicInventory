@@ -19,6 +19,8 @@ urlpatterns = patterns('',
     
     url(r'^card/change_count/$', 'inventory.views.change_card_count'),           
     url(r'^card/(?P<card_id>\d+)/$', 'inventory.views.get_card'),
+    url(r'^card/(?P<card_id>\d+)/edit/$', 'inventory.views.edit_card'),
+    url(r'^card/(?P<card_id>\d+)/delete/$', 'inventory.views.delete_card'),
     url(r'^card/(?P<card_id>\d+)/create_alt/$', 'inventory.views.create_card_alt'),
     url(r'^card/new/', 'inventory.views.create_card'),
     

@@ -10,28 +10,38 @@
 {% endblock %}
 
 {% block content %}
-<h2>{{card.name}}</h2>
+<div class="card">
+	<h2>{{card.name}}</h2>
 
-<div>Count: {{card.count}}</div>
-<div>Foils: {{card.foil_count}} </div>
+	<div class="card_tools"><a href="/card/{{card.id}}/edit/">Edit</a> <a href="/card/{{card.id}}/delete/">Delete</a></div>
 
-<div>Description: {{card.description}}</div>
-<div>Type: {{card.type}}</div>
-<div>Rarity: {{card.rarity}}</div>
-<div>Mana cost: {{card.mana_cost}}</div>
-<div>Power: {{card.power}}</div>
-<div>Toughness: {{card.toughness}}</div>
-<div>Loyalty: {{card.loyalty}}</div>
-<div>{{card.link_set.all.0.url}}</div>
 
-{% for alt in card.alternateartcard_set.all %}
-<div>Alternate Art Card</div>
-<div>Count: {{alt.count}}</div>
-<div>Foils: {{alt.foil_count}}</div>
-<form method="POST" action="/alt/{{alt.id}}/update_notes/">
-	{% csrf_token %}
-	<div>Notes: <input id='notes' name='notes' value='{{alt.notes}}'></input><button type='submit'>Update<button/></div>
-</form>
-{% endfor %}
+	{% for set in card.sets.all %}
+	<div><span class="card_attribute">Set: </span><a href="/set/{{set_id}}/">{{set.name}}</a> <img src="{{set.icon.url}}"/></div>
+	{% endfor %}
 
+	<div><span class="card_attribute">Count: </span>{{card.count}}</div>
+	<div style="padding-bottom:10px;"><span class="card_attribute">Foils: </span>{{card.foil_count}} </div>
+
+	<div><span class="card_attribute">Type: </span>{{card.type}}</div>
+	<div><span class="card_attribute">Rarity: </span>{{card.rarity}}</div>
+	<div><span class="card_attribute">Description: </span>{{card.description}}</div>
+	<div><span class="card_attribute">Mana cost: </span>{{card.mana_cost}}</div>
+	<div><span class="card_attribute">Power: </span>{{card.power}}</div>
+	<div><span class="card_attribute">Toughness: </span>{{card.toughness}}</div>
+	<div style="padding-bottom:10px;"><span class="card_attribute">Loyalty: </span>{{card.loyalty}}</div>
+
+	<div style="padding-bottom:10px;"><span class="card_attribute">Link: </span><a href="{{card.link_set.all.0.url}}" target="_blank">{{card.link_set.all.0.url}}</a></div>
+
+
+	{% for alt in card.alternateartcard_set.all %}
+	<div><span class="card_attribute alternate">Alternate Art Card</div>
+	<div><span class="card_attribute">Count: </span>{{alt.count}}</div>
+	<div><span class="card_attribute">Foils: </span>{{alt.foil_count}}</div>
+	<form style="padding-bottom:10px;" method="POST" action="/alt/{{alt.id}}/update_notes/">
+		{% csrf_token %}
+		<div><span class="card_attribute">Notes: </span><input id='notes' name='notes' value='{{alt.notes}}'></input><button type='submit'>Update</button></div>
+	</form>
+	{% endfor %}
+</div>
 {% endblock %}
